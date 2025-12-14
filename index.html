@@ -3,26 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor de Eventos</title>
+    <title>Gestión de Eventos LocalStorage</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Guardar Eventos</h1>
-
-        <!-- Formulario para añadir eventos -->
+        <h1>Mis Eventos</h1>
         <form id="event-form">
-            <input type="text" id="event-title" placeholder="Título del evento" required>
-            <input type="date" id="event-date" required>
-            <button type="submit">Añadir Evento</button>
+            <input type="text" id="event-input" placeholder="Añadir nuevo evento..." required>
+            <button type="submit">Guardar Evento</button>
         </form>
-
-        <!-- Lista de eventos -->
         <ul id="event-list">
-            <!-- Los eventos se añadirán aquí dinámicamente -->
+            <!-- Los eventos se cargarán aquí -->
         </ul>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
