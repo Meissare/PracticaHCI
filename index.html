@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eventos con Filtros y Reserva</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Iconos de FontAwesome -->
     <link href="cdnjs.cloudflare.com" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <h1>Buscador de Eventos</h1>
-        <!-- (El código de la barra de filtros y selectores es el mismo que antes) -->
+
         <div class="filter-bar">
             <div class="space-y-6">
+                <!-- Search Bar and City Selector -->
                 <div class="grid-cols-2 gap-4">
                     <div class="input-group">
                         <i class="fas fa-search icon"></i>
@@ -28,13 +30,15 @@
                         </select>
                     </div>
                 </div>
+
+                <!-- Category Filters -->
                 <div>
                     <div class="flex items-center gap-2 mb-4">
                         <i class="fas fa-filter icon-green"></i>
                         <span class="category-label">Categorías</span>
                     </div>
                     <div class="flex-wrap gap-3" id="category-filters">
-                        <!-- Los botones de filtro se generarán con JS -->
+                        <!-- Los botones de filtro (incluyendo Infantil) se generan con JS -->
                     </div>
                 </div>
             </div>
@@ -42,10 +46,11 @@
 
         <h2>Eventos Disponibles</h2>
         <div class="event-cards-container" id="event-cards-container">
-            <!-- Las tarjetas se generarán con JS -->
+            <!-- Las tarjetas se generan con JS -->
         </div>
     </div>
 
     <script src="script.js"></script>
 </body>
 </html>
+
