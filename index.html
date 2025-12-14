@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Eventos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Guardar Eventos</h1>
+
+        <!-- Formulario para añadir eventos -->
+        <form id="event-form">
+            <input type="text" id="event-title" placeholder="Título del evento" required>
+            <input type="date" id="event-date" required>
+            <button type="submit">Añadir Evento</button>
+        </form>
+
+        <!-- Lista de eventos -->
+        <ul id="event-list">
+            <!-- Los eventos se añadirán aquí dinámicamente -->
+        </ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
