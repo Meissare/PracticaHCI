@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cardsContainer = document.getElementById('event-cards-container');
     const filtersContainer = document.getElementById('category-filters');
 
-    // Datos de eventos simulados
+    // Datos de eventos simulados (se añade categoría 'Infantil')
     let eventsData = [
         { id: 1, title: 'Estreno: Interestelar', category: 'Cine', city: 'Madrid' },
         { id: 2, title: 'Ciclo Kubrick', category: 'Cine', city: 'Barcelona' },
@@ -14,29 +14,25 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 6, title: 'Festival de Jazz 2025', category: 'Concierto', city: 'Barcelona' },
         { id: 7, title: 'Partido Baloncesto', category: 'Deporte', city: 'Madrid' },
         { id: 8, title: 'Carrera Popular', category: 'Deporte', city: 'Valencia' },
+        { id: 9, title: 'Títeres en el Retiro', category: 'Infantil', city: 'Madrid' },
+        { id: 10, title: 'Cuentacuentos en la biblioteca', category: 'Infantil', city: 'Barcelona' },
     ];
 
-    const categories = ['Todos', 'Cine', 'Teatro', 'Concierto', 'Deporte'];
+    // Lista de categorías actualizada
+    const categories = ['Todos', 'Cine', 'Teatro', 'Concierto', 'Infantil', 'Deporte'];
 
-    // Variables de estado
     let currentSearchQuery = '';
     let currentCategory = 'Todos';
     let currentCity = 'Todos';
-
-    // Cargar IDs de eventos guardados desde localStorage
     let savedEventIds = JSON.parse(localStorage.getItem('savedEvents')) || [];
 
     // --- Funciones de Renderizado ---
-
     function createEventCard(event) {
         const card = document.createElement('div');
         card.classList.add('event-card');
-
-        // Comprobar si este evento está en nuestra lista de guardados
         const isSaved = savedEventIds.includes(event.id);
         const saveButtonClass = isSaved ? 'save-event-btn saved' : 'save-event-btn';
         const saveButtonText = isSaved ? 'Guardado' : 'Guardar';
-
 
         card.innerHTML = `
             <h3>${event.title}</h3>
@@ -52,8 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
         cardsContainer.appendChild(card);
     }
 
-    // (createFilterBadges function is the same as before)
     function createFilterBadges() {
+        // Limpiamos filtros anteriores por si acaso
+        filtersContainer.innerHTML = ''; 
+        
         categories.forEach(category => {
             const button = document.createElement('button');
             button.classList.add('badge');
@@ -72,22 +70,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Lógica de Filtrado Principal ---
     function filterAndRenderEvents() {
-        cardsContainer.innerHTML = '';
+        cardsContainer.innerHTML = ''; // Limpia el contenedor actual
+
         const filteredEvents = eventsData.filter(event => {
-            const matchesSearch = event.title.toLowerCase().includes(currentSearchQuery.toLowerCase());
+            // Si la categoría seleccionada es 'Todos', no aplicamos filtro de categoría
             const matchesCategory = currentCategory === 'Todos' || event.category === currentCategory;
+            
+            // Filtros de búsqueda y ciudad
+            const matchesSearch = event.title.toLowerCase().includes(currentSearchQuery.toLowerCase());
             const matchesCity = currentCity === 'Todos' || event.city === currentCity;
+            
             return matchesSearch && matchesCategory && matchesCity;
         });
 
         filteredEvents.forEach(createEventCard);
-        addReservationListeners(); // Re-attach listeners after rendering new cards
-        addSaveListeners(); // Add listeners for new save buttons
+        addReservationListeners();
+        addSaveListeners();
     }
 
     // --- Lógica de Botones (Reserva y Guardar) ---
-
     function addReservationListeners() {
         document.querySelectorAll('.reserve-btn').forEach(button => {
             button.addEventListener('click', (e) => {
@@ -105,18 +108,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const isSaved = savedEventIds.includes(eventId);
 
                 if (isSaved) {
-                    // Desguardar: quitar de la lista y actualizar UI
                     savedEventIds = savedEventIds.filter(id => id !== eventId);
                     button.classList.remove('saved');
                     button.innerHTML = '<i class="fas fa-heart"></i> Guardar';
                 } else {
-                    // Guardar: añadir a la lista y actualizar UI
                     savedEventIds.push(eventId);
                     button.classList.add('saved');
                     button.innerHTML = '<i class="fas fa-heart"></i> Guardado';
                 }
                 
-                // Guardar el estado actualizado en localStorage
                 localStorage.setItem('savedEvents', JSON.stringify(savedEventIds));
             });
         });
