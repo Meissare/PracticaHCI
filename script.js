@@ -1,36 +1,45 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const eventForm = document.getElementById('event-form');
-    const eventInput = document.getElementById('event-input');
-    const eventList = document.getElementById('event-list');
+    const searchInput = document.getElementById('search-events');
+    const citySelect = document.getElementById('select-city');
+    const badgeButtons = document.querySelectorAll('.badge');
+    const resultsPara = document.getElementById('active-filters');
 
-    let events = JSON.parse(localStorage.getItem('events')) || [];
+    // Variables de estado simuladas
+    let searchQuery = '';
+    let selectedCategory = 'Todos';
+    let selectedCity = 'Madrid';
 
-    function renderEvents() {
-        eventList.innerHTML = '';
-        events.forEach(eventText => {
-            const li = document.createElement('li');
-            li.textContent = eventText;
-            eventList.appendChild(li);
-        });
+    function updateDisplay() {
+        resultsPara.textContent = `Búsqueda: "${searchQuery}" | Ciudad: ${selectedCity} | Categoría: ${selectedCategory}`;
     }
 
-    function saveEvents() {
-        // Convierte el array de eventos a una cadena JSON antes de guardar
-        localStorage.setItem('events', JSON.stringify(events));
-    }
-
-    eventForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // Previene el envío del formulario tradicional
-        const newEvent = eventInput.value.trim();
-
-        if (newEvent) {
-            events.push(newEvent);
-            saveEvents();
-            renderEvents();
-            eventInput.value = ''; // Limpia el input
-        }
+    // Event Listener para Input de Búsqueda
+    searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        updateDisplay();
     });
 
-    // Carga los eventos al cargar la página
-    renderEvents();
+    // Event Listener para Select de Ciudad
+    citySelect.addEventListener('change', (e) => {
+        selectedCity = e.target.value;
+        updateDisplay();
+    });
+
+    // Event Listener para los Badges/Botones de Categoría
+    badgeButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            // Eliminar 'active' de todos los botones
+            badgeButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Añadir 'active' al botón clickeado
+            e.target.classList.add('active');
+            
+            selectedCategory = e.target.getAttribute('data-category');
+            updateDisplay();
+        });
+    });
+    
+    // Inicializar el estado activo del botón 'Todos' al cargar la página
+    document.querySelector('.badge[data-category="Todos"]').classList.add('active');
+    updateDisplay();
 });
